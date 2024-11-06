@@ -14,6 +14,8 @@ body {
   margin: 0;
   padding: 0;
   background-color: #17a2b8;
+  background-image:url("images/login.jpg");
+  background-size:cover;
   height: 100vh;
 }
 #login .container #login-row #login-column #login-box {
@@ -32,7 +34,11 @@ body {
 </style>
 </head>
 <body>
+	 <div class="alert alert-success" role="alert">
+	    ${message}
+	</div>
 <div id="login">
+ 			   
         <h3 class="text-center text-white pt-5">Login form</h3>
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">

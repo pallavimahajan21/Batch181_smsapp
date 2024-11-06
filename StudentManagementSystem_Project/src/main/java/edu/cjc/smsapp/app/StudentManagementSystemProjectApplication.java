@@ -9,5 +9,6 @@ public class StudentManagementSystemProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(StudentManagementSystemProjectApplication.class, args);
 	}
+	
 
 }

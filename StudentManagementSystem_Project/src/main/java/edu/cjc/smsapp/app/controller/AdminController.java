@@ -26,9 +26,9 @@ public class AdminController {
 	
 
 	@RequestMapping("/login")
-	public String preReg(@RequestParam("username") String us,@RequestParam("password") String pw,Model m)
+	public String preReg(@RequestParam("username") String username,@RequestParam("password") String password,Model m)
 	{
-		if("admin".equalsIgnoreCase(us)&& "admin".equalsIgnoreCase(pw))
+		if("admin".equalsIgnoreCase(username)&& "admin".equalsIgnoreCase(password))
 		{
 			List<Student> list=ss.getData();
 			m.addAttribute("data", list);
@@ -36,18 +36,17 @@ public class AdminController {
 		}
 		else
 		{
-			return "login";
-			/*Student s=ss.loginCheck(us,pw);
+			Student s=ss.loginCheck(username,password);
 			if(s!=null)
 			{
-				m.addAttribute("details", s);
+				m.addAttribute("s", s);
 				return "studentscreen";
 			}
 			else
 			{
-			m.addAttribute("message","invalid condiale");
+			m.addAttribute("message","Enter valid login details");
 			return "login";
-			}*/
+			}
 		}
 		
 	}
@@ -59,13 +58,68 @@ public class AdminController {
 		return "adminscreen";
 	}
 	
-	/*@RequestMapping("/edit")
-	public String editData(@RequestParam("studentContact") String contact)
+	@RequestMapping("/search")
+	public String getBatch(@RequestParam("batchNumber") String batchno, Model m)
 	{
-		Student s=ss.editData(contact);
-		return "adminscreen";
-		
-	}*/
+		List<Student> list=ss.getBatchNo(batchno);
 	
+		if(list.size()>0)
+		{
+			m.addAttribute("data", list);
+		}
+		else
+		{
+			List<Student> stu=ss.getData();
+			m.addAttribute("data", stu);
+			m.addAttribute("message", "No records are available for the batch "+batchno);
+		}
+		return "adminscreen";
+	}
+	
+	@RequestMapping("/fees")
+	public String edit(@RequestParam("id") int id, Model m)
+	{
+		Student s=ss.getSingleData(id);
+		m.addAttribute("st", s);
+		
+		return "fees";
+	}
+	
+	@RequestMapping("/payfees")
+	public String payFees(@RequestParam("studentid") int id, @RequestParam("ammount") float ammount, Model m)
+	{
+		ss.updateStudentFees(id,ammount);
+		List<Student> student=ss.getData();
+		m.addAttribute("data", student);
+		return "adminscreen";
+	}
+	
+	@RequestMapping("/batch")
+	public String batch(@RequestParam("id") int id, Model m)
+	{
+		Student s=ss.getSingleData(id);
+		m.addAttribute("s", s);
+		return "batch";
+	}
+	
+	@RequestMapping("/updateBatch")
+	public String batchShift(@RequestParam("studentid") int id, @RequestParam("batchNumber") String batchNumber, Model m)
+	{
+		ss.updateStudentBatch(id,batchNumber);
+		List<Student> student=ss.getData();
+		m.addAttribute("data", student);
+		return "adminscreen";
+	}
+	
+	@RequestMapping("/remove")
+	public String removeStudent(@RequestParam("id") int id,Model m) {
+		 
+		ss.removeStudent(id);
+		
+		List<Student> list=ss.getData();
+		m.addAttribute("data",list);
+		return "adminscreen";
+	}
+
 	
 }
